@@ -1,15 +1,21 @@
 import React, { useContext, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { MyContext } from "../App";
 import { theme } from "./style/theme";
 import { changeWork } from "./function/changeWork";
 const Main = () => {
   const store = useContext(MyContext);
-//   console.log(store);
+  //   console.log(store);
 
-const [isWork, setWork] = useState(true);
-const goWork = () => {
+  const [isWork, setWork] = useState(true);
+  const goWork = () => {
     setWork(true);
     changeWork(true);
   };
@@ -18,9 +24,16 @@ const goWork = () => {
     changeWork(false);
   };
 
+  const [inputText, setInputText]= useState("")
+  const onChangeText = (payload : string) => {
+    setInputText(payload);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
+
+      {/* 일, 여행 변경 토글 */}
       <View style={styles.header}>
         <TouchableOpacity onPress={goWork}>
           <Text
@@ -36,6 +49,17 @@ const goWork = () => {
             Travel
           </Text>
         </TouchableOpacity>
+      </View>
+      <View>
+        <TextInput
+        //   onSubmitEditing={onSubmit}
+          onChangeText={onChangeText}
+          value={inputText}
+          placeholder={
+            isWork ? "Please write what to do" : "Let's write some plan"
+          }
+          style={styles.textInput}
+        ></TextInput>
       </View>
     </View>
   );
