@@ -1,14 +1,29 @@
-import React, { useState } from "react";
-import Main from "./components/Main";
+import React, { createContext, useEffect, useState } from "react";
+import Main from "./src/components/Main";
+import { Todo, TodoContext } from "./src/type";
+import { loadTodos } from "./src/function/aboutTodo";
 
-export const MyContext = React.createContext({});
+export const toDosContext = createContext<TodoContext>({
+  toDos: [],
+  setToDos: () => {},
+});
 
 export default function App() {
   // TODOS를 전역 관리 해줍니다.
-  const [toDos, setToDos] = useState({ hi: "hi" });
+  // console.log(loadTodos())
+  const [toDos, setToDos] = useState<Todo[]>([]);
+  const init = async () => {
+    setToDos(await loadTodos());
+  };
+
+
+  useEffect(() => {
+    init();
+  }, []);
+
   return (
-    <MyContext.Provider value={toDos}>
+    <toDosContext.Provider value={{ toDos, setToDos }}>
       <Main />
-    </MyContext.Provider>
+    </toDosContext.Provider>
   );
 }

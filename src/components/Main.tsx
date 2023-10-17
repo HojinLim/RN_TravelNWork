@@ -1,18 +1,24 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
+  Alert,
+  Button,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { MyContext } from "../App";
-import { theme } from "./style/theme";
-import { changeWork } from "./function/changeWork";
+import { toDosContext } from "../../App";
+import { theme } from "../function/style/theme";
+import { changeWork } from "../function/changeWork";
+import { Todo } from "../type";
+import { loadTodos, saveToDos } from "../function/aboutTodo";
+import TodoItem from "./TodoItem";
+
 const Main = () => {
-  const store = useContext(MyContext);
-  //   console.log(store);
+  const todoContext = useContext(toDosContext);
 
   const [isWork, setWork] = useState(true);
   const goWork = () => {
@@ -24,9 +30,35 @@ const Main = () => {
     changeWork(false);
   };
 
-  const [inputText, setInputText]= useState("")
-  const onChangeText = (payload : string) => {
+  const [inputText, setInputText] = useState<string>("");
+  const onChangeText = (payload: string) => {
     setInputText(payload);
+  };
+
+  useEffect(() => {
+    // 마운트 될 때 실행
+    // loadTodos();
+    // loadIsWork();
+    // console.log(isWork)
+  }, []);
+  const onSubmit = async () => {
+    if (inputText === "") {
+      alert("빈 값이 있습니다");
+      // console.log(todoContext.toDos)
+      return;
+    }
+    setInputText("");
+    const newToDo: Todo = {
+      created_at: new Date().toString(),
+      contents: inputText,
+      isWork,
+      isDone: false,
+    };
+    todoContext.setToDos((prev) => [...prev, newToDo]);
+    await saveToDos(todoContext.toDos);
+  };
+  const check = async () => {
+    console.log(todoContext.toDos);
   };
 
   return (
@@ -50,9 +82,10 @@ const Main = () => {
           </Text>
         </TouchableOpacity>
       </View>
+      {/* Todo 입력 폼 */}
       <View>
         <TextInput
-        //   onSubmitEditing={onSubmit}
+          onEndEditing={onSubmit}
           onChangeText={onChangeText}
           value={inputText}
           placeholder={
@@ -61,6 +94,15 @@ const Main = () => {
           style={styles.textInput}
         ></TextInput>
       </View>
+      {/* TODOS 리스트  */}
+      <ScrollView>
+        {isWork ? (
+          <TodoItem todos={todoContext.toDos} isWork={true} />
+        ) : (
+          <TodoItem todos={todoContext.toDos} isWork={false} />
+        )}
+      </ScrollView>
+      <Button title="hi" onPress={check}></Button>
     </View>
   );
 };

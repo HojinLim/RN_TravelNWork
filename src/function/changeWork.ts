@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
-import { STORAGE_IS_WORK } from "../variable";
+import { STORAGE_IS_WORK } from "../components/variable";
 
 export const changeWork = async (work: boolean) => {
   await AsyncStorage.removeItem(STORAGE_IS_WORK);
