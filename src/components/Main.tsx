@@ -82,6 +82,25 @@ const Main = () => {
     ]);
   };
   const editTodo = (createdAt: string) => {};
+  const doneTodo = (createdAt: string) => {
+    // todoContext.toDos 배열에서 해당 todo를 찾습니다.
+    const updatedTodos = todoContext.toDos.map((todo: Todo) => {
+      if (todo.created_at === createdAt) {
+        // 선택한 todo의 isDone을 반대로 변경하여 완료 상태를 토글합니다.
+        return {
+          ...todo,
+          isDone: !todo.isDone,
+        };
+      }
+      return todo;
+    });
+
+    // 변경된 Todos를 설정합니다.
+    todoContext.setToDos(updatedTodos);
+
+    // 변경된 Todos를 저장합니다.
+    saveToDos(updatedTodos);
+  };
 
   return (
     <View style={styles.container}>
@@ -122,11 +141,12 @@ const Main = () => {
           {todoContext.toDos
             .filter((todo: Todo) => (isWork ? todo.isWork : !todo.isWork))
             .map((todoItem: Todo) => (
-              <TodoItem 
+              <TodoItem
                 key={todoItem.created_at}
                 todoItem={todoItem}
                 deleteTodo={deleteTodo}
                 editTodo={editTodo}
+                doneTodo={doneTodo}
               />
             ))}
         </View>

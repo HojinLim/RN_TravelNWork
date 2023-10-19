@@ -26,6 +26,7 @@ export const globalStyles = StyleSheet.create({
     fontSize: 15,
   },
   todo: {
+    // textDecorationLine:'line-through',
     backgroundColor: "gray",
     marginVertical: 10,
     paddingHorizontal: 10,
