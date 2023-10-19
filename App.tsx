@@ -10,7 +10,7 @@ export const toDosContext = createContext<TodoContext>({
 
 export default function App() {
   // TODOS를 전역 관리 해줍니다.
-  // console.log(loadTodos())
+
   const [toDos, setToDos] = useState<Todo[]>([]);
   const init = async () => {
     setToDos(await loadTodos());

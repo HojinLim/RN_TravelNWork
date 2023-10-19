@@ -61,6 +61,27 @@ const Main = () => {
     console.log(todoContext.toDos);
   };
 
+  const deleteTodo = (createdAt: string) => {
+    Alert.alert("Delete Todo", "Are you sure to delete Todo?", [
+      {
+        text: "delete",
+        onPress: () => {
+          const updatedTodos = todoContext.toDos.filter(
+            (todo: Todo) => todo.created_at !== createdAt
+          );
+          todoContext.setToDos(updatedTodos);
+          saveToDos(updatedTodos)
+        },
+      },
+      {
+        text: "No",
+        onPress: () => {
+          return;
+        },
+      },
+    ]);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -97,12 +118,20 @@ const Main = () => {
       {/* TODOS 리스트  */}
       <ScrollView>
         {isWork ? (
-          <TodoItem todos={todoContext.toDos} isWork={true} />
+          <TodoItem
+            todos={todoContext.toDos}
+            isWork={true}
+            deleteTodo={deleteTodo}
+          />
         ) : (
-          <TodoItem todos={todoContext.toDos} isWork={false} />
+          <TodoItem
+            todos={todoContext.toDos}
+            isWork={false}
+            deleteTodo={deleteTodo}
+          />
         )}
       </ScrollView>
-      <Button title="hi" onPress={check}></Button>
+    
     </View>
   );
 };
