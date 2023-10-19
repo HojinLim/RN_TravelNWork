@@ -30,21 +30,6 @@ const saveToDos = async (todos: Todo[]) => {
   }
 };
 
-// const deleteToDo = async (created_at: string) => {
-//   Alert.alert("Delete Todo", "Are you sure to delete Todo?", [
-//     {
-//       text: "delete",
-//       onPress: () => {
-//         toDosContext.
-//       },
-//     },
-//     {
-//       text: "No",
-//       onPress: () => {
-//         return;
-//       },
-//     },
-//   ]);
-// };
+
 
 export { loadTodos, saveToDos };

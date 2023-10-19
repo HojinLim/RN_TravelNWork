@@ -70,7 +70,7 @@ const Main = () => {
             (todo: Todo) => todo.created_at !== createdAt
           );
           todoContext.setToDos(updatedTodos);
-          saveToDos(updatedTodos)
+          saveToDos(updatedTodos);
         },
       },
       {
@@ -81,6 +81,7 @@ const Main = () => {
       },
     ]);
   };
+  const editTodo = (createdAt: string) => {};
 
   return (
     <View style={styles.container}>
@@ -117,21 +118,19 @@ const Main = () => {
       </View>
       {/* TODOS 리스트  */}
       <ScrollView>
-        {isWork ? (
-          <TodoItem
-            todos={todoContext.toDos}
-            isWork={true}
-            deleteTodo={deleteTodo}
-          />
-        ) : (
-          <TodoItem
-            todos={todoContext.toDos}
-            isWork={false}
-            deleteTodo={deleteTodo}
-          />
-        )}
+        <View>
+          {todoContext.toDos
+            .filter((todo: Todo) => (isWork ? todo.isWork : !todo.isWork))
+            .map((todoItem: Todo) => (
+              <TodoItem 
+                key={todoItem.created_at}
+                todoItem={todoItem}
+                deleteTodo={deleteTodo}
+                editTodo={editTodo}
+              />
+            ))}
+        </View>
       </ScrollView>
-    
     </View>
   );
 };
